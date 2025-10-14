@@ -1,0 +1,17 @@
+# .gitignore
+# Ignore output and private resumes
+output/*
+!output/.gitkeep
+*.pdf
+*.docx
+
+# Ignore local/private resume files
+resume.md
+private_*.md
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Mac OS stuff
+.DS_Store

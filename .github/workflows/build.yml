@@ -1,0 +1,30 @@
+name: Build Resume
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Pandoc
+        uses: pandoc/actions/setup@v1
+
+      - name: Install XeLaTeX + fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-xetex texlive-fonts-recommended texlive-latex-recommended \
+            texlive-latex-extra lmodern fonts-inter
+
+      - name: Build
+        run: bash make_resume.sh examples/example_resume.md output examples/template.latex examples/metadata.yaml
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkresume-build
+          path: output/*
