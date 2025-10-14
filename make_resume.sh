@@ -1,50 +1,74 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INPUT=${1:-examples/example_resume.md}
-OUTPUT_DIR=${2:-output}
-TEMPLATE=${3:-examples/template.latex}
-METADATA=${4:-examples/metadata.yaml}
-PDF_OUT=${5:-resume.pdf}
-DOCX_OUT=${6:-resume.docx}
+# === CONFIGURATION ===
+INPUT_FILE="${1:-}"
+CUSTOM_TEMPLATE="${2:-}"
+CUSTOM_OUTDIR="${3:-}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "🔧 Building resume for $INPUT..."
+# Defaults
+DEFAULT_TEMPLATE="$SCRIPT_DIR/examples/template.latex"
+DEFAULT_OUTPUT_DIR="$SCRIPT_DIR/output"
 
-need() { command -v "$1" >/dev/null 2>&1 || { echo "❌ Missing: $1"; exit 1; }; }
-need pandoc
-need xelatex
+# Resolve effective paths
+TEMPLATE="${CUSTOM_TEMPLATE:-$DEFAULT_TEMPLATE}"
+OUTPUT_DIR="${CUSTOM_OUTDIR:-$DEFAULT_OUTPUT_DIR}"
+
+# === VALIDATION ===
+if [[ -z "$INPUT_FILE" ]]; then
+  echo "❌ Usage: bash make_resume.sh <markdown-file> [optional-template] [optional-output-dir]"
+  echo "Examples:"
+  echo "  bash make_resume.sh examples/example_resume.md"
+  echo "  bash make_resume.sh examples/example_resume.md templates/modern.latex"
+  echo "  bash make_resume.sh examples/example_resume.md templates/modern.latex dist/"
+  exit 1
+fi
+
+if [[ ! -f "$INPUT_FILE" ]]; then
+  echo "❌ File not found: $INPUT_FILE"
+  exit 1
+fi
+
+if [[ ! -f "$TEMPLATE" ]]; then
+  echo "❌ Template not found: $TEMPLATE"
+  exit 1
+fi
 
 mkdir -p "$OUTPUT_DIR"
 
-# # Check LaTeX packages (BasicTeX users)
-# if command -v tlmgr >/dev/null 2>&1; then
-#   missing_pkgs=()
-#   for pkg in titlesec xcolor enumitem fontspec geometry hyperref url; do
-#     tlmgr info "$pkg" | grep -qi "installed.*yes" || missing_pkgs+=("$pkg")
-#   done
-#   if [ ${#missing_pkgs[@]} -gt 0 ]; then
-#     echo "❌ Missing LaTeX packages: ${missing_pkgs[*]}"
-#     echo "👉 Install with: sudo tlmgr update --self && sudo tlmgr install ${missing_pkgs[*]}"
-#     exit 1
-#   fi
-# fi
+# === Output filenames ===
+BASE_NAME="$(basename "$INPUT_FILE" .md)"
+PDF_OUT="$OUTPUT_DIR/${BASE_NAME}.pdf"
+DOCX_OUT="$OUTPUT_DIR/${BASE_NAME}.docx"
 
-# PDF
+echo "🔧 Building resume for $INPUT_FILE..."
+echo "🧩 Using template: $TEMPLATE"
+echo "📁 Output directory: $OUTPUT_DIR"
+
+# === Generate PDF ===
 echo "📄 Generating PDF..."
-pandoc "$INPUT" \
-  --from markdown \
+if ! pandoc "$INPUT_FILE" \
+  --from markdown+raw_tex \
   --template="$TEMPLATE" \
-  --metadata-file="$METADATA" \
   --pdf-engine=xelatex \
-  -o "$OUTPUT_DIR/$PDF_OUT"
+  --output="$PDF_OUT" \
+  --metadata=title:"" --metadata=author:""; then
+  echo "❌ PDF generation failed."
+  exit 1
+fi
 
-# DOCX
+# === Generate DOCX ===
 echo "📄 Generating DOCX..."
-pandoc "$INPUT" \
-  --from markdown \
-  --metadata-file="$METADATA" \
-  -o "$OUTPUT_DIR/$DOCX_OUT"
+if ! pandoc "$INPUT_FILE" \
+  --from markdown+raw_tex \
+  --to docx \
+  --output="$DOCX_OUT" \
+  --metadata=title:"" --metadata=author:""; then
+  echo "❌ DOCX generation failed."
+  exit 1
+fi
 
 echo "✅ Build complete!"
-echo "   PDF:  $OUTPUT_DIR/$PDF_OUT"
-echo "   DOCX: $OUTPUT_DIR/$DOCX_OUT"
+echo "   PDF:  $PDF_OUT"
+echo "   DOCX: $DOCX_OUT"

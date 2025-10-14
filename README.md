@@ -1,3 +1,5 @@
+![Build Example Resume](https://github.com/wasifmukaddam/mkresume/actions/workflows/build_demo.yml/badge.svg)
+
 # mkresume
 
 **mkresume** is a lightweight, open-source resume builder for developers and professionals who prefer working in Markdown.  

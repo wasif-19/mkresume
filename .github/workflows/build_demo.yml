@@ -1,4 +1,4 @@
-name: Build Resume
+name: Build Example Resume
 
 on:
   push:
@@ -13,15 +13,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: true  # include mkresume submodule
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # --- Cache TeX Live installation ---
       - name: Cache TeX Live
         id: cache-texlive
         uses: actions/cache@v4
@@ -34,19 +31,16 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          # Install Pandoc + minimal TeX stack if not cached
           if [ ! -d "/usr/local/texlive" ]; then
             sudo apt-get install -y pandoc texlive-xetex texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
           fi
-          pip install -r requirements.txt
           sudo apt-get install -y fonts-inter || true
 
-      - name: Build Resume
-        run: |
-          bash make_resume.sh
+      - name: Build Example Resume
+        run: bash make_demo.sh
 
-      - name: Upload generated files (PDF + DOCX)
+      - name: Upload generated files
         uses: actions/upload-artifact@v4
         with:
-          name: resume-build
+          name: mkresume-example
           path: output/
