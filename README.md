@@ -1,5 +1,3 @@
-![Build Example Resume](https://github.com/wasifmukaddam/mkresume/actions/workflows/build_demo.yml/badge.svg)
-
 # mkresume
 
 **mkresume** is a lightweight, open-source resume builder for developers and professionals who prefer working in Markdown.  
@@ -90,6 +88,15 @@ mkresume/
 
 ---
 
-## 📄 License
+### 🧑‍💻 Credits
+**mkresume** was created and is maintained by [Wasif Mukaddam](https://wasifmukaddam.com).  
+It’s built for developers and professionals who prefer writing their resumes in Markdown —  
+with clean LaTeX templates, CLI automation, and GitHub Actions support.
 
-MIT License © 2025 [Wasif Mukaddam](https://wasifmukaddam.com)
+Contributions, ideas, and pull requests are welcome!
+
+---
+
+### 📄 License
+This project is [licensed](https://github.com/wasif-19/mkresume/blob/main/LICENSE) under the **MIT License**.  
+© 2025 [Wasif Mukaddam](https://wasifmukaddam.com)
