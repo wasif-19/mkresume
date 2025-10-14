@@ -1,13 +1,4 @@
-- name: Build Resume
-  run: |
-    if [ -f "make_resume.sh" ]; then
-      bash make_resume.sh examples/example_resume.md
-    elif [ -f "make_demo.sh" ]; then
-      bash make_demo.sh
-    else
-      echo "❌ No build script found."
-      exit 1
-    fi
+name: Build Resume
 
 on:
   push:
@@ -23,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: true  # include mkresume submodule
+          submodules: true  # include mkresume submodule if present
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -52,7 +43,14 @@ jobs:
 
       - name: Build Resume
         run: |
-          bash make_resume.sh examples/example_resume.md 
+          if [ -f "make_resume.sh" ]; then
+            bash make_resume.sh examples/example_resume.md
+          elif [ -f "make_demo.sh" ]; then
+            bash make_demo.sh
+          else
+            echo "❌ No build script found."
+            exit 1
+          fi
 
       - name: Upload generated files (PDF + DOCX)
         uses: actions/upload-artifact@v4
