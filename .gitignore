@@ -1,17 +1,61 @@
-# .gitignore
-# Ignore output and private resumes
-output/*
-!output/.gitkeep
+# =========================
+# mkresume .gitignore
+# =========================
+
+# --- Build outputs ---
+output/
 *.pdf
 *.docx
+*.log
+*.aux
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+!output/.gitkeep
 
-# Ignore local/private resume files
-resume.md
-private_*.md
+# --- Temporary / backup files ---
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
 
-# Python cache
+# --- Python / virtualenv ---
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
+.env/
+.venv/
+venv/
 
-# Mac OS stuff
+# --- macOS system files ---
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# --- Editor / IDE files ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- CI / cache ---
+*.cache/
+logs/
+build/
+dist/
+*.egg-info/
+__pycache__/
+
+# --- Pandoc temp files ---
+*.tex~
+*.tmp~
+pandoc-service.log
+
+# --- Exclude local resumes (just in case someone personalizes mkresume) ---
+private_*.md
+resume_*.md
+*.old.md
