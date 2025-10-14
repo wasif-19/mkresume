@@ -1,0 +1,61 @@
+# =========================
+# mkresume .gitignore
+# =========================
+
+# --- Build outputs ---
+output/
+*.pdf
+*.docx
+*.log
+*.aux
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+!output/.gitkeep
+
+# --- Temporary / backup files ---
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# --- Python / virtualenv ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env/
+.venv/
+venv/
+
+# --- macOS system files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# --- Editor / IDE files ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- CI / cache ---
+*.cache/
+logs/
+build/
+dist/
+*.egg-info/
+__pycache__/
+
+# --- Pandoc temp files ---
+*.tex~
+*.tmp~
+pandoc-service.log
+
+# --- Exclude local resumes (just in case someone personalizes mkresume) ---
+private_*.md
+resume_*.md
+*.old.md
