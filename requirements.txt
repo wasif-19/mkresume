@@ -1,10 +1,2 @@
-# Core conversion tool
-pandoc>=3.0
-
-# Python helpers (optional for CLI extensions or automation)
-pypandoc>=1.13
-PyYAML>=6.0
-
-# LaTeX support packages (install via tlmgr or OS package manager)
-# titlesec, xcolor, enumitem, fontspec, geometry, hyperref, url,
-# hyphenat, changepage, ragged2e
+pypandoc
+pyyaml
