@@ -2,10 +2,7 @@
 \begin{center}
 {\LARGE\bfseries JANE DOE}
 
-\href{mailto:jane@example.com}{jane@example.com} ·
-\href{https://janedoe.dev}{janedoe.dev} ·
-\href{https://linkedin.com/in/janedoe}{linkedin.com/in/janedoe} ·
-(xxx) xxx-xxxx
+\href{mailto:jane@example.com}{jane@example.com} | \href{https://janedoe.dev}{janedoe.dev} | \href{https://linkedin.com/in/janedoe}{linkedin.com/in/janedoe} | +1(234)567-8910
 
 \sectiondivider
 \end{center}
@@ -78,8 +75,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum finibus arcu
 
 **Alex Kim**  
 QA Engineering Manager | TechCorp  
-Email: \href{mailto:alex.kim@techcorp.com}{alex.kim@techcorp.com} | Phone: (xxx) xxx-xxxx  
+\href{mailto:alex.kim@techcorp.com}{alex.kim@techcorp.com} | (123) 456-7890  
 
 **Morgan Lee**  
 Software Engineering Manager | SoftLabs  
-Email: \href{mailto:morgan.lee@softlabs.com}{morgan.lee@softlabs.com} | Phone: (xxx) xxx-xxxx
+\href{mailto:morgan.lee@softlabs.com}{morgan.lee@softlabs.com} | +1(234)567-8910
