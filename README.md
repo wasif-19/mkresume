@@ -1,6 +1,6 @@
 # mkresume
 
-### 🆕 What’s New (v1.2.0)
+### 🆕 What’s New (v1.0.0-beta)
 
 - ✂️ **Added `--redacted` mode:** generate a phone-number-free version of your resume for public sharing.  
 - 🧠 **Improved regex logic:** safely removes phone numbers while preserving pipes, parentheses, and line structure.  
