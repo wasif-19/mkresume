@@ -21,17 +21,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      # --- Cache TeX Live installation ---
-      - name: Cache TeX Live
-        id: cache-texlive
-        uses: actions/cache@v4
-        with:
-          path: |
-            /usr/local/texlive
-            ~/.texlive
-          key: ${{ runner.os }}-texlive-v1
-          enableCrossOsArchive: false
-
       - name: Install dependencies
         run: |
           sudo apt-get update
