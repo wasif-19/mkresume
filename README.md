@@ -1,16 +1,16 @@
 # mkresume
 
-### 🆕 What’s New (v1.2.0)
+### 🆕 What’s New (v1.2.1)
 
+- ⚙️ **Optional DOCX generation:** use the new `--docx` flag to generate a Word version only when needed.  
 - ✂️ **Added `--redacted` mode:** generate a phone-number-free version of your resume for public sharing.  
 - 🧠 **Improved regex logic:** safely removes phone numbers while preserving pipes, parentheses, and line structure.  
-- 🧰 **Example format update:** simplified header contact line (single-line with `|` separators).  
 - 🪄 **Backward compatible:** no breaking changes — standard usage remains the same.
 
 ---
 
 **mkresume** is a lightweight, open-source resume builder for developers and professionals who prefer working in Markdown.  
-It converts plain-text `.md` files into beautifully formatted, **ATS-friendly PDF and DOCX** resumes — fully automatable via GitHub Actions or local scripts.
+It converts plain-text `.md` files into beautifully formatted, **ATS-friendly PDF** resumes — and optionally DOCX — fully automatable via GitHub Actions or local scripts.
 
 ---
 
@@ -35,11 +35,20 @@ brew install --cask font-lato   # optional
 
 ---
 
-### 2️⃣ Build a Resume
+### 2️⃣ Build a Resume (PDF only by default)
 
-Edit the sample file or use your own Markdown file:
 ```bash
 bash make_resume.sh examples/example_resume.md
+```
+
+This generates:
+```
+output/example_resume.pdf
+```
+
+To include a DOCX version, add `--docx`:
+```bash
+bash make_resume.sh examples/example_resume.md --docx
 ```
 
 This generates:
@@ -52,10 +61,15 @@ output/example_resume.docx
 
 ### 3️⃣ Generate a Redacted Version (No Phone Numbers)
 
-You can now build a version of your resume **without phone numbers** — ideal for public uploads or portfolio sites — using the `--redacted` flag:
+You can build a version of your resume **without phone numbers** using the `--redacted` flag:
 
 ```bash
 bash make_resume.sh examples/example_resume.md --redacted
+```
+
+Or combine both flags:
+```bash
+bash make_resume.sh examples/example_resume.md --redacted --docx
 ```
 
 This produces:
@@ -64,7 +78,7 @@ output/example_resume_redacted.pdf
 output/example_resume_redacted.docx
 ```
 
-✅ Automatically removes all phone number patterns such as:
+✅ Automatically removes phone number patterns such as:
 ```
 +1(234)567-8910, (234)-567-8910, 234-567-8910
 ```
@@ -80,30 +94,14 @@ A GitHub Actions workflow (`.github/workflows/build.yml`) can automatically buil
 
 ## 🧩 Features
 
-- 🧱 **Markdown → PDF + DOCX** via Pandoc and XeLaTeX  
+- 🧱 **Markdown → PDF (+ optional DOCX)** via Pandoc and XeLaTeX  
 - 🧰 **Command-line and CI-friendly** automation  
 - 🪄 **Redacted mode:** generate a phone-free version for public sharing (`--redacted` or `-r`)  
+- ⚙️ **Optional DOCX output:** generate `.docx` only when `--docx` flag is passed  
 - 🧹 **Safe formatting:** regex precisely removes phone numbers without breaking layout  
 - 🎨 **Customizable LaTeX template** with Inter or Lato fonts  
-- ⚙️ **Lightweight and privacy-first** — everything builds locally  
 - 🧰 **Extensible:** integrate with GitHub Actions, Makefiles, or CI/CD pipelines  
 - 🌐 **Future-ready:** web interface and template gallery planned
-
----
-
-## 🧠 Example Use Case
-
-Developers can maintain multiple Markdown resumes (e.g., `resume_ai.md`, `resume_qalead.md`) and optionally publish redacted versions for portfolio sites:
-
-```bash
-# Full private resume
-bash make_resume.sh resume_ai.md
-
-# Public-safe version
-bash make_resume.sh resume_ai.md --redacted
-```
-
-Both versions are generated under `output/`.
 
 ---
 
@@ -112,10 +110,10 @@ Both versions are generated under `output/`.
 ```
 mkresume/
 │
-├── make_resume.sh               # CLI builder script (Pandoc + XeLaTeX + redacted mode)
+├── make_resume.sh               # CLI builder script (Pandoc + XeLaTeX + redacted/docx flags)
 ├── template.latex               # Custom LaTeX template
 ├── examples/
-│   └── example_resume.md        # Sample resume (Jane Doe, now single-line header format)
+│   └── example_resume.md        # Sample resume
 ├── output/
 │   ├── example_resume.pdf
 │   ├── example_resume.docx
