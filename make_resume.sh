@@ -6,12 +6,16 @@ INPUT_FILE=""
 CUSTOM_TEMPLATE=""
 CUSTOM_OUTDIR=""
 MODE="normal"
+BUILD_DOCX=false
 
 # --- Parse arguments ---
 for arg in "$@"; do
   case "$arg" in
     --redacted|-r)
       MODE="redacted"
+      ;;
+    --docx)
+      BUILD_DOCX=true
       ;;
     *)
       if [[ -z "$INPUT_FILE" ]]; then
@@ -37,12 +41,11 @@ OUTPUT_DIR="${CUSTOM_OUTDIR:-$DEFAULT_OUTPUT_DIR}"
 
 # === VALIDATION ===
 if [[ -z "$INPUT_FILE" ]]; then
-  echo "❌ Usage: bash make_resume.sh <markdown-file> [optional-template] [optional-output-dir] [--redacted|-r]"
+  echo "❌ Usage: bash make_resume.sh <markdown-file> [optional-template] [optional-output-dir] [--redacted|-r] [--docx]"
   echo "Examples:"
   echo "  bash make_resume.sh examples/example_resume.md"
-  echo "  bash make_resume.sh examples/example_resume.md templates/modern.latex"
-  echo "  bash make_resume.sh examples/example_resume.md templates/modern.latex dist/"
-  echo "  bash make_resume.sh examples/example_resume.md --redacted"
+  echo "  bash make_resume.sh examples/example_resume.md --docx"
+  echo "  bash make_resume.sh examples/example_resume.md templates/modern.latex --redacted"
   exit 1
 fi
 
@@ -90,6 +93,7 @@ echo "🔧 Building resume for $INPUT_FILE..."
 echo "🧩 Using template: $TEMPLATE"
 echo "📁 Output directory: $OUTPUT_DIR"
 [[ "$MODE" == "redacted" ]] && echo "✂️  Mode: redacted (phone numbers removed)"
+[[ "$BUILD_DOCX" == true ]] && echo "📦 DOCX generation: enabled" || echo "📦 DOCX generation: skipped"
 
 # === Generate PDF ===
 echo "📄 Generating PDF..."
@@ -103,15 +107,17 @@ if ! pandoc "$TEMP_FILE" \
   exit 1
 fi
 
-# === Generate DOCX ===
-echo "📄 Generating DOCX..."
-if ! pandoc "$TEMP_FILE" \
-  --from markdown+raw_tex \
-  --to docx \
-  --output="$DOCX_OUT" \
-  --metadata=title:"" --metadata=author:""; then
-  echo "❌ DOCX generation failed."
-  exit 1
+# === Generate DOCX (optional) ===
+if [[ "$BUILD_DOCX" == true ]]; then
+  echo "📄 Generating DOCX..."
+  if ! pandoc "$TEMP_FILE" \
+    --from markdown+raw_tex \
+    --to docx \
+    --output="$DOCX_OUT" \
+    --metadata=title:"" --metadata=author:""; then
+    echo "❌ DOCX generation failed."
+    exit 1
+  fi
 fi
 
 # === Cleanup temporary file ===
@@ -119,4 +125,6 @@ fi
 
 echo "✅ Build complete!"
 echo "   PDF:  $PDF_OUT"
-echo "   DOCX: $DOCX_OUT"
+if [[ "$BUILD_DOCX" == true ]]; then
+  echo "   DOCX: $DOCX_OUT"
+fi

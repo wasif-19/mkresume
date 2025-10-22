@@ -43,9 +43,7 @@ jobs:
       - name: Build Resume
         run: |
           if [ -f "make_resume.sh" ]; then
-            bash make_resume.sh examples/example_resume.md
-          elif [ -f "make_demo.sh" ]; then
-            bash make_demo.sh
+            bash make_resume.sh examples/example_resume.md --docx
           else
             echo "❌ No build script found."
             exit 1
