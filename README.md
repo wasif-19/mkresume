@@ -1,6 +1,6 @@
 # mkresume
 
-### 🆕 What’s New (v1.2.1)
+### 🆕 What’s New (v1.0.2)
 
 - ⚙️ **Optional DOCX generation:** use the new `--docx` flag to generate a Word version only when needed.  
 - ✂️ **Added `--redacted` mode:** generate a phone-number-free version of your resume for public sharing.  
