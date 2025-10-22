@@ -74,9 +74,17 @@ if [[ "$MODE" == "redacted" ]]; then
   echo "🕵️‍♂️ Redacting phone numbers..."
   TEMP_FILE="$(mktemp /tmp/resume_no_phone.XXXXXX.md)"
 
+  # Pattern notes:
+  # - Look for a phone token bounded by line start, a pipe, or whitespace
+  # - Match +1(234)567-8910, (234)567-8910, 234-567-8910, etc.
+  # - Remove one adjacent pipe if it's immediately before *or* after the number
+  # - Keep all other text and separators untouched
   sed -E '
+    # remove optional space/pipe before the phone
     s/([[:space:]]*\|?[[:space:]]*)(\(?\+?[0-9][0-9() .-]{8,}[0-9]\)?)([[:space:]]*\|?[[:space:]]*)/\1\3/g
+    # collapse any accidental double pipes like "| |" -> "|"
     s/\|[[:space:]]*\|/|/g
+    # strip a trailing pipe + spaces at end of line
     s/[[:space:]]*\|[[:space:]]*$//g
   ' "$INPUT_FILE" > "$TEMP_FILE"
 fi
